@@ -143,27 +143,6 @@ from imblearn.over_sampling import SMOTE
 sm = SMOTE(random_state=2)
 features_train, labels_train = sm.fit_sample(features_train, labels_train.ravel())
 
-"""Best: 0.354439 using {'batch_size': 20, 'epochs': 100}
-0.207330 (0.032416) with: {'batch_size': 10, 'epochs': 10}
-0.267206 (0.028298) with: {'batch_size': 10, 'epochs': 50}
-0.299209 (0.063069) with: {'batch_size': 10, 'epochs': 100}
-0.274260 (0.028318) with: {'batch_size': 20, 'epochs': 10}
-0.320716 (0.023497) with: {'batch_size': 20, 'epochs': 50}
-0.354439 (0.026660) with: {'batch_size': 20, 'epochs': 100}
-0.220234 (0.056856) with: {'batch_size': 40, 'epochs': 10}
-0.303166 (0.041684) with: {'batch_size': 40, 'epochs': 50}
-0.295767 (0.036351) with: {'batch_size': 40, 'epochs': 100}
-0.252065 (0.035863) with: {'batch_size': 60, 'epochs': 10}
-0.278906 (0.038507) with: {'batch_size': 60, 'epochs': 50}
-0.266518 (0.088261) with: {'batch_size': 60, 'epochs': 100}
-0.293014 (0.010425) with: {'batch_size': 80, 'epochs': 10}
-0.281315 (0.042188) with: {'batch_size': 80, 'epochs': 50}
-0.286992 (0.015178) with: {'batch_size': 80, 'epochs': 100}
-0.218513 (0.035049) with: {'batch_size': 100, 'epochs': 10}
-0.296628 (0.046451) with: {'batch_size': 100, 'epochs': 50}
-0.279594 (0.029543) with: {'batch_size': 100, 'epochs': 100}
-"""
-
 import xgboost
 classifier_ie = xgboost.XGBClassifier()
 classifier_ns = xgboost.XGBClassifier()
@@ -199,35 +178,7 @@ lr = LogisticRegression()
 clf = GridSearchCV(lr, parameters, cv=5, verbose=5, n_jobs=3)
 clf.fit(features_train, labels_train.ravel())
 
-import string
-def prediction_string(pred_string):
-  res=""
-  if "http" in pred_string:
-    l=re.findall(r"\b(?:https?://)?(?:(?i:[1-9a-z]+\.))[^\s,]+\b",pred_string)
-    for link in l:
-      message=pred_string.replace(link,"")
-    res=res+" "+pred_string.strip()
-  else:
-    res=res+pred_string.strip()
-  res=re.sub('[^a-zA-Z\s]'," ",res)
-  res=res.lower()
-  res=res.split()
-  res = [word for word in res if not word in list_stopwords]
-  wl = PorterStemmer()
-  res = [wl.stem(word) for word in res]
-  res=" ".join(res)
-  nopunc = [char for char in res if char not in string.punctuation]
-  nopunc = ''.join(nopunc)
-  a=tfidf_transformer.transform(bow_transformer.transform([nopunc]))
-  return a
 
-a="facerol everi singl time someon say get better ye mayb got better mean alway get better reason hear peopl say get better shinji evangelion hrm big secret realli call intellig wise creativ think world stupid sub par thing said insan realli must one two never realli experienc call high high probabl good health ehh like whole point suicid end life want want end live want elimin bad enjoy live enough go well never realli impli suicid anyth wonder correl depresson suicid well yeah alreadi got answer well say agr subconsci want get better get wor actual know know pretti mess head haha like mental thank haha hmm interest yeash would cool"
-
-print(classifier1.predict(tfidf_transformer.transform(bow_transformer.transform([prediction_string(a)])).toarray()))
-
-predict1=tfidf_transformer.transform(bow_transformer.transform([prediction_string(a)]))
-
-predict1.shape
 
 import pickle
 
